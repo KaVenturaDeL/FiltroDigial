@@ -1,0 +1,46 @@
+//Filtro de un Mundo Digital con Toques de Realidad
+
+import gab.opencv.*;
+import processing.video.*;
+import java.awt.*;
+
+
+OpenCV opencv;
+Capture video;
+
+
+void setup() {
+
+
+  size(640, 480);
+  
+  video = new Capture(this, 640/2, 480/2);
+  opencv = new OpenCV(this, 640/2, 480/2);
+  opencv.loadCascade(OpenCV.CASCADE_FRONTALFACE);  
+  
+  video.start();
+}
+
+void draw() {
+
+//funciona con la webcam
+    scale(2);
+  opencv.loadImage(video);
+  
+    image(video, 0, 0 );
+    
+    
+//detecta las caras
+  Rectangle[] faces = opencv.detect();
+  println(faces.length);
+   
+  }
+
+
+void captureEvent(Capture c) {
+  c.read();
+
+  opencv.findCannyEdges(20,75); //cantidad de lineas para dibujar y detallar las cosas
+  image(opencv.getOutput(), 0, 0); //imagen tipo digital
+
+  }
